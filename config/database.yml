@@ -1,0 +1,16 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: qgsu_development
+
+test:
+  <<: *default
+  database: qgsu_test
+
+production:
+  <<: *default
+  database: qgsu_production
