@@ -40,7 +40,8 @@ var ShorturlsListItem = React.createClass({
 var ShorturlIndex = React.createClass({
   getInitialState: function () {
     return {
-      shorturls: []
+      shorturls: [],
+      action: ''
     };
   },
 
@@ -50,15 +51,21 @@ var ShorturlIndex = React.createClass({
       if (this.isMounted()) {
         // var new_juds = typeof this.state.juds[0] !== 'undefined' && this.state.juds[0] !== null ? React.addons.update(this.state.juds, {$push: lastGist.juds}) : lastGist.juds;
         this.setState({
-          shorturls: lastGist.shorturls
+          shorturls: lastGist.shorturls,
+          action: lastGist.action
         });
       }
     }.bind(this));
   },
 
+  tick: function() {
+    // console.log('hello');
+  },
+
   componentDidMount: function() {
     this.loadPage(this.props.source);
     document.title = "QuickGoogleShortUrl";
+    // this.interval = setInterval(this.tick, 5000);
   },
 
   handleCreateSubmit: function(comment) {
@@ -89,32 +96,37 @@ var ShorturlIndex = React.createClass({
     }
 
     return (
-      <div className="container-fluid">
-        <div className="col-md-8 col-sm-8 col-xs-7">
-          <div className="table-responsive">
-            <button type="button" className="btn btn-primary" onClick={() => this.loadPage(this.props.source)} >更新</button>
-            <table id="shorturl_table" className="table table-hover">
-              <thead>
-                <tr>
-                  <th>RAW URL</th>
-                  <th>GOOGLE URL</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows}
-              </tbody>
-            </table>
+      <div>
+        <Navbar
+          action={this.state.action}
+        />
+        <div className="container-fluid">
+          <div className="col-md-8 col-sm-8 col-xs-7">
+            <div className="table-responsive">
+              {/*<button type="button" className="btn btn-primary" onClick={() => this.loadPage(this.props.source)} >更新</button>*/}
+              <table id="shorturl_table" className="table table-hover">
+                <thead>
+                  <tr>
+                    <th>RAW URL</th>
+                    <th>GOOGLE URL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div className="col-md-4 col-sm-4 col-xs-5">
-          <div className="fixed">
-            <div className="row">
-              <div className="col-md-10 col-xs-10">
-                <div className="row">
-                  <h3>批次建立縮網址</h3>
-                  <ShorturlsCreateForm
-                    onCreateSubmit={this.handleCreateSubmit}
-                  />
+          <div className="col-md-4 col-sm-4 col-xs-5">
+            <div className="fixed">
+              <div className="row">
+                <div className="col-md-10 col-xs-10">
+                  <div className="row">
+                    <h3>批次建立縮網址</h3>
+                    <ShorturlsCreateForm
+                      onCreateSubmit={this.handleCreateSubmit}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

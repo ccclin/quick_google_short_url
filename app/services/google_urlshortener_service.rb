@@ -1,6 +1,8 @@
 require 'json'
 
 class GoogleUrlshortenerService
+  KEY = ENV['GOOGLE_KEY']
+
   def initialize(input_url)
     uri = URI('https://www.googleapis.com/urlshortener/v1/url')
 
@@ -11,7 +13,7 @@ class GoogleUrlshortenerService
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     http.read_timeout = 90
-    @c = http.post("#{uri.path}?key=#{key}", params.to_json, json_headers)
+    @c = http.post("#{uri.path}?key=#{KEY}", params.to_json, json_headers)
   end
 
   def output_hash

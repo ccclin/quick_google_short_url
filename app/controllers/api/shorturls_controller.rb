@@ -1,13 +1,14 @@
 class Api::ShorturlsController < ApplicationController
   def index
-    @shorturls = Shorturl.all
+    @shorturls = current_user.shorturls
+    @action = request.original_url.split('/')[-1]
   end
 
   def create
     url = params[:url_string]
-    if Shorturl.find_by(url: url).blank?
+    if current_user.shorturls.find_by(url: url).blank?
       goo_url = GoogleUrlshortenerService.new(url).google_url_id
-      shurl = Shorturl.new({url: url, goo_url: goo_url})
+      shurl = current_user.shorturls.new({url: url, goo_url: goo_url})
       shurl.save
     end
     render 'api/shorturls/index'

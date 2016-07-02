@@ -1,5 +1,0 @@
-       Prefix Verb URI Pattern              Controller#Action
-         root GET  /                        shorturls#index
-    shorturls GET  /shorturls(.:format)     shorturls#index
-api_shorturls GET  /api/shorturls(.:format) api/shorturls#index {:format=>"json"}
-              POST /api/shorturls(.:format) api/shorturls#create {:format=>"json"}
