@@ -5,3 +5,7 @@ node :shorturls do
     { raw_url: url.url, goo_url: url.goo_url }
   end
 end unless @shorturls.blank?
+
+node :action do
+  @action
+end if @action
