@@ -4,7 +4,7 @@ class CreateGooGlWorker
     user = User.find(user_id)
     google_api_key = user.google_api_key.key
     urls.split("\n").each do |url|
-      if user.shorturls.find_by(url: url).blank?
+      if url.present? && user.shorturls.find_by(url: url).blank?
         goo_url = GoogleUrlshortenerService.new(google_api_key, url).google_url_id
         shurl = user.shorturls.new({url: url, goo_url: goo_url})
         shurl.save
