@@ -30,12 +30,12 @@ var ShorturlsListItem = React.createClass({
   componentDidMount: function() {
     var copy_id = "to_copy_" + this.props.shorturl_id;
     var short_id = "short_url_" + this.props.shorturl_id;
+    var raw_url_id = "raw_url_" + this.props.shorturl_id;
     document.getElementById(copy_id).addEventListener("click", function() {
       copyToClipboard(document.getElementById(short_id));
     });
-    $('[data-toggle="tooltip"]').tooltip({
+    $('#' + raw_url_id).tooltip({
       'selector': '',
-      'placement': 'top',
       'container':'body'
     });
   },
@@ -45,7 +45,7 @@ var ShorturlsListItem = React.createClass({
     var shorturl_id = this.props.shorturl_id;
     return (
       <tr>
-        <td className="url"><a href={url.raw_url} data-toggle="tooltip" title={url.raw_url}>{url.raw_url}</a></td>
+        <td className="url"><a id={"raw_url_" + shorturl_id} href={url.raw_url} data-toggle="tooltip" data-placement="top-left" title={url.raw_url}>{url.raw_url}</a></td>
         <td className="goo-url">
           <a href={url.goo_url} id={"short_url_" + shorturl_id} >{url.goo_url}</a>
           <a href="javascript:void(0)" id={"to_copy_" + shorturl_id} className="btn btn-link"><i className="fa fa-clipboard"></i></a>

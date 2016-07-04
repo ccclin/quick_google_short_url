@@ -1,19 +1,20 @@
 table {
-    width: 100%;
+  width: 100%;
 }
 td {
-    max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 td.url {
-    width: 60%;
+  width: 60%;
 }
 td.goo-url {
-    width: 40%;
+  width: 40%;
 }
 
 div.tooltip-inner {
-    max-width: 350px;
+  max-width: 350px;
+  word-break: break-all;
 }

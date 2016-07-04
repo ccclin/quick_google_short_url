@@ -31,7 +31,7 @@ var Navbar = React.createClass({
               {row}
             </ul>
             <ul className="nav navbar-nav navbar-right">
-              <li><a href="#">登出</a></li>
+              <li><a href="/users/sign_out">登出</a></li>
             </ul>
           </div>
         </div>
