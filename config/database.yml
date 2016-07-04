@@ -13,4 +13,5 @@ test:
 
 production:
   <<: *default
+  host: <%= ENV['DATABASE_URL'] %>
   database: qgsu_production
