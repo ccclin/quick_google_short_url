@@ -13,3 +13,7 @@ td.url {
 td.goo-url {
     width: 40%;
 }
+
+div.tooltip-inner {
+    max-width: 350px;
+}
