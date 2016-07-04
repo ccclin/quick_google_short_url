@@ -26,12 +26,25 @@ var ShorturlsCreateForm = React.createClass({
 });
 
 var ShorturlsListItem = React.createClass({
+
+  componentDidMount: function() {
+    var copy_id = "to_copy_" + this.props.shorturl_id;
+    var short_id = "short_url_" + this.props.shorturl_id;
+    document.getElementById(copy_id).addEventListener("click", function() {
+      copyToClipboard(document.getElementById(short_id));
+    });
+  },
+
   render: function() {
-    var url = this.props.data
+    var url = this.props.data;
+    var shorturl_id = this.props.shorturl_id;
     return (
       <tr>
-        <td>{url.raw_url}</td>
-        <td>{url.goo_url}</td>
+        <td className="url"><a href="url.raw_url">{url.raw_url}</a></td>
+        <td className="goo-url">
+          <a href="url.goo_url" id={"short_url_" + shorturl_id} >{url.goo_url}</a>
+          <a href="javascript:void(0)" id={"to_copy_" + shorturl_id} className="btn btn-link"><i className="fa fa-clipboard"></i></a>
+        </td>
       </tr>
     );
   }
@@ -40,8 +53,12 @@ var ShorturlsListItem = React.createClass({
 var ShorturlIndex = React.createClass({
   getInitialState: function () {
     return {
+      current_page: 0,
+      total_pages: 0,
+      next_page: 0,
       shorturls: [],
-      action: ''
+      action: '',
+      job_done: 'true'
     };
   },
 
@@ -49,23 +66,63 @@ var ShorturlIndex = React.createClass({
     $.get(url, function(result) {
       var lastGist = result;
       if (this.isMounted()) {
-        // var new_juds = typeof this.state.juds[0] !== 'undefined' && this.state.juds[0] !== null ? React.addons.update(this.state.juds, {$push: lastGist.juds}) : lastGist.juds;
+        var new_shorturls = typeof this.state.shorturls[0] !== 'undefined' && this.state.shorturls[0] !== null ? React.addons.update(this.state.shorturls, {$push: lastGist.shorturls}) : lastGist.shorturls;
         this.setState({
+          current_page: lastGist.paging.current_page,
+          next_page: lastGist.paging.current_page + 1,
+          total_pages: lastGist.paging.total_pages,
+          shorturls: new_shorturls,
+          action: lastGist.action,
+          job_done: lastGist.job_done
+        });
+      }
+    }.bind(this));
+  },
+
+  autoLoadPage: function(url) {
+    $.get(url, function(result) {
+      var lastGist = result;
+      if (this.isMounted()) {
+        this.setState({
+          current_page: lastGist.paging.current_page,
+          next_page: lastGist.paging.current_page + 1,
+          total_pages: lastGist.paging.total_pages,
           shorturls: lastGist.shorturls,
-          action: lastGist.action
+          job_done: lastGist.job_done
         });
       }
     }.bind(this));
   },
 
   tick: function() {
-    // console.log('hello');
+    if (this.state.job_done === 'false') {
+      var url = "/api/shorturls/get_new";
+      console.log(url);
+      this.autoLoadPage(url);
+    }
   },
 
   componentDidMount: function() {
     this.loadPage(this.props.source);
     document.title = "QuickGoogleShortUrl";
-    // this.interval = setInterval(this.tick, 5000);
+    window.addEventListener('scroll', this.handleScroll);
+    this.interval = setInterval(this.tick, 5000);
+  },
+
+  componentWillUnmount: function() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+
+  handleScroll: function(event) {
+    var scrollBottom = $(document).height() - $(window).height() - $(window).scrollTop();
+    if (scrollBottom == 0 && this.state.current_page < this.state.total_pages) {
+      this.handlePageChanged();
+    }
+  },
+
+  handlePageChanged: function(){
+    var url = "/api/shorturls?page=" + this.state.next_page + "&total=" + this.state.total_pages;
+    this.loadPage(url);
   },
 
   handleCreateSubmit: function(comment) {
@@ -75,6 +132,10 @@ var ShorturlIndex = React.createClass({
       type: 'POST',
       data: comment,
       success: function(result) {
+        var lastGist = result;
+        this.setState({
+          job_done: lastGist.job_done
+        });
         alert('送出');
       }.bind(this),
       error: function(xhr, status, err) {
@@ -91,6 +152,7 @@ var ShorturlIndex = React.createClass({
         <ShorturlsListItem
           key={i}
           data={this.state.shorturls[i]}
+          shorturl_id={i}
         />
       );
     }
@@ -103,7 +165,6 @@ var ShorturlIndex = React.createClass({
         <div className="container-fluid">
           <div className="col-md-8 col-sm-8 col-xs-7">
             <div className="table-responsive">
-              {/*<button type="button" className="btn btn-primary" onClick={() => this.loadPage(this.props.source)} >更新</button>*/}
               <table id="shorturl_table" className="table table-hover">
                 <thead>
                   <tr>
