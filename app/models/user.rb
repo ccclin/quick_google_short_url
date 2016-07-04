@@ -6,4 +6,5 @@ class User < ApplicationRecord
 
   has_many :shorturls
   has_one :google_api_key
+  has_many :shorturl_job_checks
 end

@@ -1,0 +1,14 @@
+class Api::ApiKeysController < Api::ApiController
+  def show
+    @google_api_key = current_user.google_api_key || current_user.build_google_api_key
+    @action = request.original_url.split('/')[-1]
+  end
+
+  def update
+    @google_api_key = current_user.google_api_key || current_user.build_google_api_key
+    @google_api_key.key = params[:google_api_key].to_s
+    @google_api_key.save
+
+    render 'api/api_keys/show'
+  end
+end

@@ -49,12 +49,12 @@ gem 'awesome_rails_console'
 
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller'
+  # gem 'binding_of_caller'
   gem 'quiet_assets'
   gem 'rubocop', require: false
   gem 'brakeman', require: false
-  gem 'mina', require: false
-  gem 'rack-mini-profiler', require: false
+  # gem 'mina', require: false
+  # gem 'rack-mini-profiler', require: false
   gem "letter_opener"
   gem 'pry'
   gem 'pry-remote'
@@ -69,11 +69,10 @@ group :test do
   gem 'simplecov', require: false
 end
 
-# react
+# frontend
 gem 'react-rails'
-
-# bootstrap
 gem 'bootstrap-sass'
+gem 'font-awesome-rails'
 
 # db
 gem 'pg'
@@ -90,3 +89,6 @@ gem 'devise'
 
 # sidekiq
 gem 'sidekiq'
+
+# paging
+gem 'kaminari'

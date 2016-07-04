@@ -2,13 +2,13 @@ var Navbar = React.createClass({
   render: function() {
     var row = [];
 
-    if (this.props.action == 'shorturls'){
+    if (this.props.action.indexOf( 'shorturls') >= 0){
       row.push(<li className="active" key="shorturls"><a href="/shorturls">縮網址 <span className="sr-only">(current)</span></a></li>);
     } else {
       row.push(<li key="shorturls"><a href="/shorturls">縮網址</a></li>);
     };
 
-    if (this.props.action == 'api_key'){
+    if (this.props.action.indexOf('api_key') >= 0){
       row.push(<li className="active" key="api_key"><a href="/api_key">APIKey <span className="sr-only">(current)</span></a></li>);
     } else {
       row.push(<li key="api_key"><a href="/api_key">APIKey</a></li>);
