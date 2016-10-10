@@ -1,7 +1,8 @@
 class Api::ApiKeysController < Api::ApiController
   def show
     @google_api_key = current_user.google_api_key || current_user.build_google_api_key
-    @action = request.original_url.split('/')[-1]
+    @action = get_action
+    @action[:api_key][:active] = true
   end
 
   def update
