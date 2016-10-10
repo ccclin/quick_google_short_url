@@ -3,7 +3,8 @@ class Api::ShorturlsController < Api::ApiController
 
   def index
     get_shorturls_and_job_done
-    @action = request.original_url.split('/')[-1]
+    @action = get_action
+    @action[:shorturls][:active] = true
   end
 
   def create

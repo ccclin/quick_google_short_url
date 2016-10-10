@@ -14,4 +14,11 @@ class Api::ApiController < ApplicationController
       params[:page].to_i
     end
   end
+
+  def get_action
+    {
+      shorturls: { url: '/shorturls', id: 'shorturls', title: '縮網址' },
+      api_key: { url: '/api_key', id: 'api_key', title: 'APIKey' }
+    }
+  end
 end
